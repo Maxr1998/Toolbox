@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="de.Maxr1998.Toolbox"
+    android:installLocation="auto"
+    android:versionCode="1"
+    android:versionName="1.0.0">
+
+    <!-- PERMISSIONS -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+
+
+        <activity
+            android:name="de.Maxr1998.Toolbox.BaseActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+        <activity
+            android:name="de.Maxr1998.Toolbox.DeveloperSectionActivity"
+            android:label="@string/menu_dev_section"
+            android:parentActivityName="de.Maxr1998.Toolbox.BaseActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.Maxr1998.CleanIt.MainActivity" />
+        </activity>
+
+    </application>
+
+</manifest>

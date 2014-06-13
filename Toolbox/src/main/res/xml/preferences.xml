@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="force_update"
+        android:summary="@string/force_update_summary"
+        android:title="@string/force_update" />
+    <EditTextPreference
+        android:defaultValue="48"
+        android:inputType="number"
+        android:key="update_interval"
+        android:summary="@string/update_interval_summary"
+        android:title="@string/update_interval" />
+
+    <PreferenceCategory android:title="@string/pref_header_addfolders">
+        <EditTextPreference
+            android:capitalize="words"
+            android:inputType="textCapWords"
+            android:key="example_text"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/pref_addfolder1" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_header_about">
+        <Preference
+            android:key="about_pref"
+            android:title="@string/about_pref" />
+        <Preference
+            android:key="unlock_developer_section_pref"
+            android:title="@string/unlock_developer_section_pref" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
