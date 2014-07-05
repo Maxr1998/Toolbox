@@ -39,3 +39,5 @@ gradle/
 .gradle/
 gradlew*
 
+library/
+

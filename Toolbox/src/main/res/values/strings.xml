@@ -2,7 +2,7 @@
 <resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
 
     <!-- GENERAL -->
-    <string name="app_name">CleanIt</string>
+    <string name="app_name">Max\'s Toolbox</string>
 
     <!-- General User Interface -->
     <string name="loading">Loading…</string>
@@ -20,14 +20,20 @@
     <!-- Navigation Drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
     <string-array name="nav_drawer_items">
-        <item>Device Information</item>
+        <item>Device information</item>
         <item>Cleaner</item>
+        <item>Internal storage backup</item>
+        <item>Post ROM flash tasks</item>
         <item>Settings</item>
     </string-array>
+
     <array name="nav_drawer_icons">
         <item>@drawable/ic_action_about</item>
         <item>@drawable/ic_action_discard</item>
+        <item>@drawable/list_item_bg_normal</item>
+        <item>@drawable/list_item_bg_normal</item>
         <item>@drawable/ic_action_settings</item>
     </array>
     <!-- Content Description -->
@@ -42,9 +48,9 @@
     <string name="storage_used">Used:</string>
     <string name="storage_free">Free:</string>
 
-
     <!-- CLEAN FRAGMENT -->
-    <string name="dalvik_warning">This will wipe the dalvik cache of the phone. After doing this, your device will get extremely unstable and it highly recommended to reboot afterwards. Do you want to proceed?</string>
+    <string name="dalvik_warning">This will wipe the dalvik cache of the phone. After doing this, your device will get extremely unstable and it highly recommended to reboot afterwards.
+        Do you want to proceed?</string>
     <!-- Manifest Download and update -->
     <string name="manifest_too_old_nn">The local copy of manifest is older than %s hours and should be updated on next network connection.</string>
     <string name="manifest_updated">The manifest was automatically updated because it was older than %s hours.</string>
@@ -67,10 +73,26 @@
     <string name="dalvik_post_reboot">It\'s recommended to reboot now.</string>
     <string name="cancel_nr">Cancel (Not recommended)</string>
 
+    <!-- BACKUP FRAGMENT -->
+    <string name="backup_description">This will backup the content of your internal storage as archive.
+        NOTE: Folders known for their big size will be excluded! (e.g. custom recovery folders, MultiRom folder, backup folders)</string>
+    <string name="toast_internal_not_set">Internal Storage Location not set!</string>
+    <string name="toast_external_not_set">External Storage Location not set!</string>
+    <!-- Storage setup -->
+    <string name="title_activity_storage_setup">Storage locations setup</string>
+    <string name="storage_setup_desc">Here you have to specify the location of your internal and external storage,
+        since it\'s not manageable to find out their locations, because of the high fragmentation and there\'s no definite API for it (blame Google!)</string>
+    <string name="internal_storage_location"><b>Internal storage location</b></string>
+    <string name="external_storage_location"><b>External storage location</b></string>
+    <string name="internal_storage_setup_desc">This is the storage that will be backed up, e.g. <i>/storage/emulated/0</i> or <i>/storage/sdcard0</i></string>
+    <string name="external_storage_setup_desc">This is the trickier part. You will have to specify your SD-Card location,
+        or an external  mounted USB stick (e.g. <i>/storage/sdcard1</i>, or <i>/storage/extSdCard</i>). If you don\'t have any of these, just choose internal storage again,
+        it\'ll backup all the other content on the storage in a sub-folder. Note that you\'ll then need pretty much free storage.</string>
+
     <!-- MENUS -->
-    <string name="menu_settings">Settings</string>
     <string name="menu_dev_section">Developer section</string>
-    <string name="dev_text">This activity is for development. It contains activities that are not ready, SOME BUTTONS CAN DELETE FILES YOU NEED! It\'s not my fault if you do something wrong here. Do you REALLY want to continue?</string>
+    <string name="dev_text">This activity is for development. It contains activities that are not ready,
+        SOME BUTTONS CAN DELETE FILES YOU NEED! It\'s not my fault if you do something wrong here. Do you REALLY want to continue?</string>
 
     <!-- SETTINGS -->
     <string name="title_activity_settings">Settings</string>
@@ -80,10 +102,18 @@
     <string name="no_network">There\'s no network connection…</string>
     <string name="update_interval">Update interval</string>
     <string name="update_interval_summary">Timespan in which the manifest gets automatically updated. If it is 0, it will never be updated automatically.</string>
+    <!-- Cleaner -->
+    <string name="pref_header_cleaner">Cleaner</string>
+    <string name="pref_custom_deletion_folders">Custom folders to delete (Not implemented)</string>
+    <!--TODO-->
+    <!-- Backup -->
+    <string name="pref_header_backup">Internal storage backup</string>
+    <string name="pref_backup_storage_setup">Setup backup storage</string>
     <!-- About -->
     <string name="pref_header_about">About</string>
     <string name="about_pref">About</string>
-    <string name="about_text">CleanIt is an app developed by Maxr1998. It clears files and caches  that are spamming your SD-Card. Please help making the database bigger by sending file paths of offline ads, thumbs and more.\n\n©2014 by Maxr1998</string>
+    <string name="about_text">CleanIt is an app developed by Maxr1998. It clears files and caches  that are spamming your SD-Card.
+        Please help making the database bigger by sending file paths of offline ads, thumbs and more.\n\n©2014 by Maxr1998</string>
     <string name="unlock_developer_section_pref">Unlock developer section</string>
     <string name="show_dev_already">You have already unlocked developer section…</string>
     <string name="show_dev_on">You successfully unlocked developer section!</string>
@@ -93,14 +123,10 @@
         <item quantity="other">You are now <xliff:g id="step_count">%1$d</xliff:g> steps away from being a developer.</item>
     </plurals>
 
-    <string name="pref_header_addfolders">Add own folders to delete</string>
-    <string name="pref_addfolder1">Folder 1</string>
 
+    <!-- =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
     <!-- DO NOT TRANSLATE // STATIC -->
     <string name="manifest_link">https://dl.dropboxusercontent.com/s/s0pskncqf9cf4ib/manifest.txt</string>
     <string name="manifest_filename">manifest.txt</string>
-    <string name="title_activity_base">BaseActivity</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
 
 </resources>

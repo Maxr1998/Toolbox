@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Environment;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Utils {
@@ -48,5 +51,23 @@ public class Utils {
 
     public static void showToast(Context c, int id) {
         Toast.makeText(c, id, Toast.LENGTH_SHORT).show();
+    }
+
+
+    public static void logToFile(String msg) {
+        try {
+            FileWriter Logger = new FileWriter(Environment.getExternalStorageDirectory().getPath() + "/logs/Toolbox.log", true);
+            Logger.write(msg);
+            Logger.write("\n");
+            Logger.flush();
+            Logger.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void d(String msg) {
+        logToFile(msg);
     }
 }

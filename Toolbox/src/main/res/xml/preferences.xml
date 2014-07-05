@@ -3,7 +3,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Preference
-        android:key="force_update"
+        android:key="force_update_pref"
         android:summary="@string/force_update_summary"
         android:title="@string/force_update" />
     <EditTextPreference
@@ -13,15 +13,16 @@
         android:summary="@string/update_interval_summary"
         android:title="@string/update_interval" />
 
-    <PreferenceCategory android:title="@string/pref_header_addfolders">
-        <EditTextPreference
-            android:capitalize="words"
-            android:inputType="textCapWords"
-            android:key="example_text"
-            android:maxLines="1"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="@string/pref_addfolder1" />
+    <PreferenceCategory android:title="@string/pref_header_cleaner">
+        <Preference
+            android:key="custom_deletion_folders"
+            android:title="@string/pref_custom_deletion_folders" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/pref_header_backup">
+        <Preference
+            android:key="backup_storage_setup_pref"
+            android:title="@string/pref_backup_storage_setup" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_header_about">

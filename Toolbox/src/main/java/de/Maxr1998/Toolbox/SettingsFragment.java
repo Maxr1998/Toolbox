@@ -2,6 +2,7 @@ package de.Maxr1998.Toolbox;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -15,7 +16,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
-    public static final String FORCE_UPDATE = "force_update";
+    public static final String FORCE_UPDATE = "force_update_pref";
+    public static final String BACKUP_STORAGE_SETUP = "backup_storage_setup_pref";
     public static final String ABOUT = "about_pref";
     public static final String UNLOCK_DEV = "unlock_developer_section_pref";
     private static Activity ACTIVITY;
@@ -35,6 +37,8 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
         Preference force_update = findPreference(FORCE_UPDATE);
         force_update.setOnPreferenceClickListener(this);
+        Preference backup_storage_setup = findPreference(BACKUP_STORAGE_SETUP);
+        backup_storage_setup.setOnPreferenceClickListener(this);
         Preference about = findPreference(ABOUT);
         about.setOnPreferenceClickListener(this);
         Preference dev = findPreference(UNLOCK_DEV);
@@ -67,6 +71,9 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
                     .setNeutralButton(android.R.string.ok, null)
                     .show();
 
+        } else if (pref.getKey().equals(BACKUP_STORAGE_SETUP)) {
+            Intent intent = new Intent(ACTIVITY, BackupStorageSetupActivity.class);
+            startActivity(intent);
         } else if (pref.getKey().equals(ABOUT)) {
             new AlertDialog.Builder(ACTIVITY)
                     .setIcon(R.drawable.ic_action_about)

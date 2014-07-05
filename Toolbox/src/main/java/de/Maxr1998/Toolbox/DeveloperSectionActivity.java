@@ -2,59 +2,83 @@ package de.Maxr1998.Toolbox;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.Button;
 
 import java.util.Random;
 
 public class DeveloperSectionActivity extends Activity {
-    public static int randInt(int min, int max) {
+    private static Activity ACTIVITY;
+    private static Button BUTTON;
+    private static Random RANDOM = new Random();
+    final long countDownTime = 300 * 1000;
+    int i;
+    SharedPreferences prefs;
 
-        // Usually this can be a field rather than a method variable
-        Random rand = new Random();
+    public void Timer(long waitTime) {
+        new CountDownTimer(waitTime, 1000) {
+            public void onTick(long millisUntilFinished) {
+                long sUntilFinished = millisUntilFinished / 1000;
+                long minutesUntilFinished = sUntilFinished / 60;
+                long slmUntilFinished = sUntilFinished - minutesUntilFinished * 60;
+                String slmUntilFinishedString;
+                if (slmUntilFinished < 10) {
+                    slmUntilFinishedString = "0" + String.valueOf(slmUntilFinished);
+                } else slmUntilFinishedString = String.valueOf(slmUntilFinished);
+                BUTTON.setText("Wait " + minutesUntilFinished + ":" + slmUntilFinishedString);
+            }
 
-        // nextInt is normally exclusive of the top value,
-        // so add 1 to make it inclusive
-        int randomNum = rand.nextInt((max - min) + 1) + min;
+            public void onFinish() {
+                BUTTON.setEnabled(true);
+                BUTTON.setText("Random Boolean");
+            }
+        }.start();
+    }
 
-        return randomNum;
+    private boolean getRandomBoolean() {
+        return RANDOM.nextBoolean();
     }
 
     protected void onCreate(Bundle savedInstanceState) {
         // Layout
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dev);
+
+        ACTIVITY = this;
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        i = 0;
+
+        // Button
+        BUTTON = (Button) findViewById(R.id.button);
+
+        BUTTON.setText("Random Boolean");
+        long lastClickTime = prefs.getLong("lastClickTime", 0);
+        long passedTime = System.currentTimeMillis() - lastClickTime;
+        if (passedTime < countDownTime) {
+            BUTTON.setEnabled(false);
+            Timer(countDownTime - passedTime);
+        } else BUTTON.setEnabled(true);
+
+        BUTTON.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                i++;
+                String message = String.valueOf(getRandomBoolean());
+
+                new AlertDialog.Builder(ACTIVITY)
+                        .setMessage(message)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .create().show();
+
+                if (i >= 3) {
+                    BUTTON.setEnabled(false);
+                    prefs.edit().putLong("lastClickTime", System.currentTimeMillis()).commit();
+                    Timer(countDownTime);
+                }
+            }
+        });
     }
-
-    public void test(View view) {
-        String answer;
-        String numbers;
-        int x = randInt(0, 9);
-        int y = randInt(0, 9);
-        int z = randInt(0, 9);
-
-        numbers = String.valueOf(x) + String.valueOf(y) + String.valueOf(z);
-
-        if (x % 2 == 0) {
-            x = 0;
-        } else x = 1;
-
-        if (y % 2 == 0) {
-            y = 0;
-        } else y = 1;
-
-        if (z % 2 == 0) {
-            z = 0;
-        } else z = 1;
-
-        if (x + y + z <= 1) {
-            answer = "Yes";
-        } else answer = "No";
-
-        new AlertDialog.Builder(this)
-                .setTitle(answer)
-                .setMessage(numbers)
-                .create().show();
-    }
-
 }

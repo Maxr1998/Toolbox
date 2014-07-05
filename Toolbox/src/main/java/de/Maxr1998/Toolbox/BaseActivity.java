@@ -156,8 +156,12 @@ public class BaseActivity extends Activity {
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
         // Clean
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
-        // Settings
+        // Internal Storage Backup
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
+        // Post Flash
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
+        // Settings
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
 
 
         // Recycle the typed array
@@ -262,6 +266,9 @@ public class BaseActivity extends Activity {
                 fragment = new CleanFragment();
                 break;
             case 2:
+                fragment = new BackupFragment();
+                break;
+            case 4:
                 fragment = new SettingsFragment();
                 break;
 
@@ -281,7 +288,7 @@ public class BaseActivity extends Activity {
             mDrawerLayout.closeDrawer(mDrawerList);
         } else {
             // error in creating fragment
-            Log.e("CleanActivity", "Error in creating fragment");
+            Log.e("Fragment Manager", "Error in creating fragment");
         }
     }
 

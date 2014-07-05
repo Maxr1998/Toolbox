@@ -34,6 +34,8 @@ public class fileDownloader extends AsyncTask<String, Integer, Boolean> {
     @Override
     public void onPreExecute() {
         progressDialog = new ProgressDialog(activity);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setCancelable(false);
         progressDialog.setTitle(activity.getString(R.string.pleaseWait));
         progressDialog.setMessage(activity.getString(R.string.downloadingManifest));
         if (showProgress) progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);

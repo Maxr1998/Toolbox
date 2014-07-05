@@ -42,6 +42,7 @@ public class fileCleaner extends AsyncTask<String, String, Boolean> {
         progressDialog = new ProgressDialog(activity);
         progressDialog.setTitle(activity.getString(R.string.pleaseWait));
         //progressDialog.setMessage(activity.getString(R.string.deleting_files));
+        progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.setCancelable(false);
         progressDialog.setProgressStyle(progressDialog.STYLE_HORIZONTAL);
         progressDialog.setMax(nrOfTasks);
