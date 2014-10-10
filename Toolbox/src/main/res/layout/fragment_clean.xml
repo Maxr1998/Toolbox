@@ -73,12 +73,12 @@
         android:layout_below="@+id/format_cache"
         android:text="@string/cb_clear_dalvik" />
 
-    <Button
-        android:id="@+id/clear_selected_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
+    <de.Maxr1998.Toolbox.Fab
+        android:id="@+id/clear_selected_fab"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/button_clear_selected" />
+        android:layout_alignParentRight="true" />
 
 </RelativeLayout>

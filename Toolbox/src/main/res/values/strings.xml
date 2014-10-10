@@ -13,31 +13,20 @@
     <string name="retry">Try again</string>
     <string name="done">Done.</string>
     <string name="proceed">Proceed</string>
-    <string name="not_recommended">Not recommended</string>
     <string name="reboot_now">Reboot NOW</string>
     <string name="warning">Warning!</string>
+    <string name="not_implemented">Function not implemented!</string>
 
     <!-- Navigation Drawer -->
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string-array name="nav_drawer_items">
         <item>Device information</item>
         <item>Cleaner</item>
         <item>Internal storage backup</item>
+        <item>LogCat</item>
         <item>Post ROM flash tasks</item>
-        <item>Settings</item>
     </string-array>
 
-    <array name="nav_drawer_icons">
-        <item>@drawable/ic_action_about</item>
-        <item>@drawable/ic_action_discard</item>
-        <item>@drawable/list_item_bg_normal</item>
-        <item>@drawable/list_item_bg_normal</item>
-        <item>@drawable/ic_action_settings</item>
-    </array>
-    <!-- Content Description -->
-    <string name="desc_list_item_icon">Item Icon</string>
+    <string name="settings">Settings</string>
 
     <!-- INFO FRAGMENT -->
     <string name="device_check">Getting device name…</string>
@@ -65,8 +54,6 @@
     <string name="cb_clear_temporary">Clear temporary (*.tmp) files</string>
     <string name="cb_format_cache">Format /cache partition (Root required)</string>
     <string name="cb_clear_dalvik">Clear dalvik-cache (Root required)</string>
-    <!-- Buttons -->
-    <string name="button_clear_selected">Clear selected</string>
     <!-- Cleaner -->
     <string name="no_manifest">The manifest isn\'t found or doesn\'t exist.</string>
     <string name="no_root">It seems your device isn\'t rooted, although root would be required for this action.</string>
@@ -82,8 +69,8 @@
     <string name="title_activity_storage_setup">Storage locations setup</string>
     <string name="storage_setup_desc">Here you have to specify the location of your internal and external storage,
         since it\'s not manageable to find out their locations, because of the high fragmentation and there\'s no definite API for it (blame Google!)</string>
-    <string name="internal_storage_location"><b>Internal storage location</b></string>
-    <string name="external_storage_location"><b>External storage location</b></string>
+    <string name="internal_storage_location">Internal storage location</string>
+    <string name="external_storage_location">External storage location</string>
     <string name="internal_storage_setup_desc">This is the storage that will be backed up, e.g. <i>/storage/emulated/0</i> or <i>/storage/sdcard0</i></string>
     <string name="external_storage_setup_desc">This is the trickier part. You will have to specify your SD-Card location,
         or an external  mounted USB stick (e.g. <i>/storage/sdcard1</i>, or <i>/storage/extSdCard</i>). If you don\'t have any of these, just choose internal storage again,
@@ -105,7 +92,7 @@
     <!-- Cleaner -->
     <string name="pref_header_cleaner">Cleaner</string>
     <string name="pref_custom_deletion_folders">Custom folders to delete (Not implemented)</string>
-    <!--TODO-->
+    <!-- TODO -->
     <!-- Backup -->
     <string name="pref_header_backup">Internal storage backup</string>
     <string name="pref_backup_storage_setup">Setup backup storage</string>
@@ -114,7 +101,7 @@
     <string name="about_pref">About</string>
     <string name="about_text">CleanIt is an app developed by Maxr1998. It clears files and caches  that are spamming your SD-Card.
         Please help making the database bigger by sending file paths of offline ads, thumbs and more.\n\n©2014 by Maxr1998</string>
-    <string name="unlock_developer_section_pref">Unlock developer section</string>
+    <string name="version">Version</string>
     <string name="show_dev_already">You have already unlocked developer section…</string>
     <string name="show_dev_on">You successfully unlocked developer section!</string>
 
@@ -123,10 +110,12 @@
         <item quantity="other">You are now <xliff:g id="step_count">%1$d</xliff:g> steps away from being a developer.</item>
     </plurals>
 
-
     <!-- =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
     <!-- DO NOT TRANSLATE // STATIC -->
     <string name="manifest_link">https://dl.dropboxusercontent.com/s/s0pskncqf9cf4ib/manifest.txt</string>
     <string name="manifest_filename">manifest.txt</string>
+
+
+    <!-- NEW, reordering needed! -->
 
 </resources>

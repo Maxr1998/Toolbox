@@ -9,14 +9,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 
 import java.util.ArrayList;
 
 public class CleanFragment extends Fragment {
 
-    private static Activity activity;
+    private static Activity ACTIVITY;
     public int tasks_nr;
     ArrayList<String> tasks;
 
@@ -38,13 +37,19 @@ public class CleanFragment extends Fragment {
         // Settings
         tasks = new ArrayList<String>();
         tasks_nr = 0;
-        activity = getActivity();
+        ACTIVITY = getActivity();
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_clean, container, false);
+
+        Fab mFab = (Fab) rootView.findViewById(R.id.clear_selected_fab);
+
+        mFab.setFabColor(getResources().getColor(R.color.accent_color));
+        mFab.setFabDrawable(getResources().getDrawable(R.drawable.ic_action_discard));
+
 
         View[] cbv = new View[]{
                 rootView.findViewById(R.id.clear_ads),
@@ -114,7 +119,7 @@ public class CleanFragment extends Fragment {
                             if (checked) {
                                 final CheckBox cd = (CheckBox) view.findViewById(R.id.clear_dalvik);
                                 cd.setChecked(false);
-                                new AlertDialog.Builder(activity)
+                                new AlertDialog.Builder(ACTIVITY)
                                         .setTitle(R.string.warning)
                                         .setIcon(R.drawable.ic_action_warning)
                                         .setMessage(R.string.dalvik_warning)
@@ -139,13 +144,13 @@ public class CleanFragment extends Fragment {
             });
         }
 
-        final Button clear = (Button) rootView.findViewById(R.id.clear_selected_button);
-        clear.setOnClickListener(new View.OnClickListener() {
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 clear();
             }
         });
+
         return rootView;
     }
 
@@ -157,7 +162,7 @@ public class CleanFragment extends Fragment {
         String test = String.valueOf(tasks_nr);
         Log.d("Number of all tasks", test);
 
-        clean(activity, tasks_nr, tasks);
+        clean(ACTIVITY, tasks_nr, tasks);
     }
 }
 

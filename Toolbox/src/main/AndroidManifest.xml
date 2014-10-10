@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="de.Maxr1998.Toolbox"
     android:installLocation="auto"
     android:versionCode="1"
-    android:versionName="1.0.0">
+    android:versionName="dev">
+
+    <uses-sdk tools:node="replace" />
 
     <!-- PERMISSIONS -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -39,6 +42,11 @@
         <activity
             android:name=".BackupStorageSetupActivity"
             android:label="@string/title_activity_storage_setup" />
+
+        <service
+            android:name=".LogCatService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

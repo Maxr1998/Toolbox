@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -16,10 +17,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
+
     public static final String FORCE_UPDATE = "force_update_pref";
     public static final String BACKUP_STORAGE_SETUP = "backup_storage_setup_pref";
     public static final String ABOUT = "about_pref";
-    public static final String UNLOCK_DEV = "unlock_developer_section_pref";
+    public static final String VERSION = "version";
     private static Activity ACTIVITY;
     File manifestFile;
     SharedPreferences prefs;
@@ -41,9 +43,15 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         backup_storage_setup.setOnPreferenceClickListener(this);
         Preference about = findPreference(ABOUT);
         about.setOnPreferenceClickListener(this);
-        Preference dev = findPreference(UNLOCK_DEV);
-        dev.setOnPreferenceClickListener(this);
+        Preference version = findPreference(VERSION);
+        version.setOnPreferenceClickListener(this);
 
+
+        try {
+            version.setSummary(getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
 
         prefs = PreferenceManager.getDefaultSharedPreferences(ACTIVITY);
         if (prefs.getBoolean("dev_unlocked", false)) {
@@ -82,7 +90,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
                     .setPositiveButton(android.R.string.ok, null)
                     .create().show();
 
-        } else if (pref.getKey().equals(UNLOCK_DEV)) {
+        } else if (pref.getKey().equals(VERSION)) {
             mDevHitCountdown--;
             if (mDevHitToast != null) {
                 mDevHitToast.cancel();

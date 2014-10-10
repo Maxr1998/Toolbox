@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.TypedArray;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -21,35 +20,32 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
-
-import de.Maxr1998.Toolbox.adapter.NavDrawerListAdapter;
-import de.Maxr1998.Toolbox.model.NavDrawerItem;
-
 
 public class BaseActivity extends Activity {
 
+    static final int NORMAL_DRAWER_ITEMS = 4;
     public static File manifestFile;
     private static Activity ACTIVITY;
     public int updateInterval;
     SharedPreferences prefs;
     URL manifestUrl;
-    TypedArray navMenuIcons;
-    ArrayList<NavDrawerItem> navDrawerItems;
-    NavDrawerListAdapter adapter;
+    CustomNavDrawerAdapter adapter;
+    LinearLayout settings;
     private DrawerLayout mDrawerLayout;
+    private LinearLayout mLeftDrawer;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
-    private String[] navMenuTitles;
+    private String[] mDrawerItems;
 
     public static void downloadManifestHelper(Activity activity, URL manifestUrl, File manifestFile, String... args) {
         new fileDownloader(activity, manifestUrl, manifestFile, false).execute(args);
@@ -136,71 +132,53 @@ public class BaseActivity extends Activity {
         // Actions
         downloadManifest();
 
-
         // Navigation Drawer
         mTitle = mDrawerTitle = getTitle();
 
-        // load slide menu items
-        navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
-
-        // nav drawer icons from resources
-        navMenuIcons = getResources().obtainTypedArray(R.array.nav_drawer_icons);
-
+        mDrawerItems = getResources().getStringArray(R.array.nav_drawer_items);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
-
-        navDrawerItems = new ArrayList<NavDrawerItem>();
-
-        // adding nav drawer items to array
-        // Info
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
-        // Clean
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
-        // Internal Storage Backup
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
-        // Post Flash
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
-        // Settings
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
-
-
-        // Recycle the typed array
-        navMenuIcons.recycle();
-
-        mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
-
-        // setting the nav drawer list adapter
-        adapter = new NavDrawerListAdapter(getApplicationContext(),
-                navDrawerItems);
+        mLeftDrawer = (LinearLayout) findViewById(R.id.left_drawer);
+        mDrawerList = (ListView) findViewById(R.id.left_list);
+        adapter = new CustomNavDrawerAdapter(this, R.layout.drawer_list_item, mDrawerItems);
         mDrawerList.setAdapter(adapter);
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-        // enabling action bar app icon and behaving it as toggle button
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.ic_drawer, //nav menu toggle icon
-                R.string.app_name, // nav drawer open - description for accessibility
-                R.string.app_name // nav drawer close - description for accessibility
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                mDrawerLayout,
+                R.drawable.ic_drawer,
+                R.string.app_name,
+                R.string.app_name
         ) {
-            public void onDrawerClosed(View view) {
+            public void onDrawerClosed(View v) {
                 getActionBar().setTitle(mTitle);
-                // calling onPrepareOptionsMenu() to show action bar icons
                 invalidateOptionsMenu();
             }
 
-            public void onDrawerOpened(View drawerView) {
+            public void onDrawerOpened(View v) {
                 getActionBar().setTitle(mDrawerTitle);
-                // calling onPrepareOptionsMenu() to hide action bar icons
                 invalidateOptionsMenu();
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         if (savedInstanceState == null) {
-            // on first time display view for first nav item
             displayView(0);
         }
+
+
+        settings = (LinearLayout) findViewById(R.id.settings);
+
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayView(NORMAL_DRAWER_ITEMS + 1);
+            }
+        });
+
     }
 
     @Override
@@ -245,7 +223,7 @@ public class BaseActivity extends Activity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // if nav drawer is opened, hide the action items
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mLeftDrawer);
         if (prefs.getBoolean("dev_unlocked", false)) {
             menu.findItem(R.id.menu_dev).setVisible(!drawerOpen);
         }
@@ -268,24 +246,31 @@ public class BaseActivity extends Activity {
             case 2:
                 fragment = new BackupFragment();
                 break;
-            case 4:
+            case 3:
+                fragment = new LogCatFragment();
+                break;
+            case 5:
                 fragment = new SettingsFragment();
                 break;
 
             default:
+                Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_SHORT).show();
                 break;
         }
 
         if (fragment != null) {
+            if (position <= NORMAL_DRAWER_ITEMS) {
+                // update selected item and title, then close the drawer
+                mDrawerList.setItemChecked(position, true);
+                mDrawerList.setSelection(position);
+                setTitle(mDrawerItems[position]);
+            }
+
+            mDrawerLayout.closeDrawer(mLeftDrawer);
+
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
-                    .replace(R.id.frame_container, fragment).commit();
-
-            // update selected item and title, then close the drawer
-            mDrawerList.setItemChecked(position, true);
-            mDrawerList.setSelection(position);
-            setTitle(navMenuTitles[position]);
-            mDrawerLayout.closeDrawer(mDrawerList);
+                    .replace(R.id.content_frame, fragment).commit();
         } else {
             // error in creating fragment
             Log.e("Fragment Manager", "Error in creating fragment");
@@ -312,13 +297,13 @@ public class BaseActivity extends Activity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    private class SlideMenuClickListener implements
-            ListView.OnItemClickListener {
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-            // display view for selected nav drawer item
+        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
             displayView(position);
+            if (position != 4)
+                adapter.selectedItem(position);
         }
     }
 }

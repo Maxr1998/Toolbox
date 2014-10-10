@@ -30,8 +30,8 @@
             android:key="about_pref"
             android:title="@string/about_pref" />
         <Preference
-            android:key="unlock_developer_section_pref"
-            android:title="@string/unlock_developer_section_pref" />
+            android:key="version"
+            android:title="@string/version" />
     </PreferenceCategory>
 
 </PreferenceScreen>

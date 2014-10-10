@@ -4,6 +4,5 @@
     <item
         android:id="@+id/new_folder_item"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/create_folder_label"></item>
-
+        android:title="@string/create_folder_label" />
 </menu>

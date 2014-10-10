@@ -75,7 +75,7 @@ public class DeveloperSectionActivity extends Activity {
 
                 if (i >= 3) {
                     BUTTON.setEnabled(false);
-                    prefs.edit().putLong("lastClickTime", System.currentTimeMillis()).commit();
+                    prefs.edit().putLong("lastClickTime", System.currentTimeMillis()).apply();
                     Timer(countDownTime);
                 }
             }
