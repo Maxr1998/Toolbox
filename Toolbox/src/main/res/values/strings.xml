@@ -61,20 +61,9 @@
     <string name="cancel_nr">Cancel (Not recommended)</string>
 
     <!-- BACKUP FRAGMENT -->
-    <string name="backup_description">This will backup the content of your internal storage as archive.
-        NOTE: Folders known for their big size will be excluded! (e.g. custom recovery folders, MultiRom folder, backup folders)</string>
-    <string name="toast_internal_not_set">Internal Storage Location not set!</string>
-    <string name="toast_external_not_set">External Storage Location not set!</string>
-    <!-- Storage setup -->
-    <string name="title_activity_storage_setup">Storage locations setup</string>
-    <string name="storage_setup_desc">Here you have to specify the location of your internal and external storage,
-        since it\'s not manageable to find out their locations, because of the high fragmentation and there\'s no definite API for it (blame Google!)</string>
-    <string name="internal_storage_location">Internal storage location</string>
-    <string name="external_storage_location">External storage location</string>
-    <string name="internal_storage_setup_desc">This is the storage that will be backed up, e.g. <i>/storage/emulated/0</i> or <i>/storage/sdcard0</i></string>
-    <string name="external_storage_setup_desc">This is the trickier part. You will have to specify your SD-Card location,
-        or an external  mounted USB stick (e.g. <i>/storage/sdcard1</i>, or <i>/storage/extSdCard</i>). If you don\'t have any of these, just choose internal storage again,
-        it\'ll backup all the other content on the storage in a sub-folder. Note that you\'ll then need pretty much free storage.</string>
+    <string name="dialog_title_choose_profile">Choose backup profile</string>
+    <string name="dialog_item_no_profiles_available">No profiles available. Click "add" to add one.</string>
+    <string name="add">Add</string>
 
     <!-- MENUS -->
     <string name="menu_dev_section">Developer section</string>
@@ -94,12 +83,11 @@
     <string name="pref_custom_deletion_folders">Custom folders to delete (Not implemented)</string>
     <!-- TODO -->
     <!-- Backup -->
-    <string name="pref_header_backup">Internal storage backup</string>
-    <string name="pref_backup_storage_setup">Setup backup storage</string>
+
     <!-- About -->
     <string name="pref_header_about">About</string>
     <string name="about_pref">About</string>
-    <string name="about_text">CleanIt is an app developed by Maxr1998. It clears files and caches  that are spamming your SD-Card.
+    <string name="about_text">Max\'s Toolbox is an app developed by Maxr1998. It clears files and caches  that are spamming your SD-Card.
         Please help making the database bigger by sending file paths of offline ads, thumbs and more.\n\n©2014 by Maxr1998</string>
     <string name="version">Version</string>
     <string name="show_dev_already">You have already unlocked developer section…</string>

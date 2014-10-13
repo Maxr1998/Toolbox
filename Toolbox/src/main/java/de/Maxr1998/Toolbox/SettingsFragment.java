@@ -2,7 +2,6 @@ package de.Maxr1998.Toolbox;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import java.net.URL;
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
 
     public static final String FORCE_UPDATE = "force_update_pref";
-    public static final String BACKUP_STORAGE_SETUP = "backup_storage_setup_pref";
     public static final String ABOUT = "about_pref";
     public static final String VERSION = "version";
     private static Activity ACTIVITY;
@@ -39,8 +37,6 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
         Preference force_update = findPreference(FORCE_UPDATE);
         force_update.setOnPreferenceClickListener(this);
-        Preference backup_storage_setup = findPreference(BACKUP_STORAGE_SETUP);
-        backup_storage_setup.setOnPreferenceClickListener(this);
         Preference about = findPreference(ABOUT);
         about.setOnPreferenceClickListener(this);
         Preference version = findPreference(VERSION);
@@ -78,10 +74,6 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
                     .setMessage(R.string.no_network)
                     .setNeutralButton(android.R.string.ok, null)
                     .show();
-
-        } else if (pref.getKey().equals(BACKUP_STORAGE_SETUP)) {
-            Intent intent = new Intent(ACTIVITY, BackupStorageSetupActivity.class);
-            startActivity(intent);
         } else if (pref.getKey().equals(ABOUT)) {
             new AlertDialog.Builder(ACTIVITY)
                     .setIcon(R.drawable.ic_action_about)

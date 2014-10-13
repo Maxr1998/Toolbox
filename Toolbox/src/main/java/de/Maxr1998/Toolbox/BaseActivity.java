@@ -29,7 +29,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 
-public class BaseActivity extends Activity {
+public class BaseActivity extends Activity implements DemandReturnBackListener {
 
     static final int NORMAL_DRAWER_ITEMS = 4;
     public static File manifestFile;
@@ -46,6 +46,7 @@ public class BaseActivity extends Activity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mDrawerItems;
+    private int lastPos;
 
     public static void downloadManifestHelper(Activity activity, URL manifestUrl, File manifestFile, String... args) {
         new fileDownloader(activity, manifestUrl, manifestFile, false).execute(args);
@@ -259,6 +260,9 @@ public class BaseActivity extends Activity {
         }
 
         if (fragment != null) {
+            if (position != 2) {
+                lastPos = position;
+            }
             if (position <= NORMAL_DRAWER_ITEMS) {
                 // update selected item and title, then close the drawer
                 mDrawerList.setItemChecked(position, true);
@@ -297,8 +301,12 @@ public class BaseActivity extends Activity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+    public void onDemandReturnBack() {
+        displayView(lastPos);
+        adapter.selectedItem(lastPos);
+    }
 
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
             displayView(position);

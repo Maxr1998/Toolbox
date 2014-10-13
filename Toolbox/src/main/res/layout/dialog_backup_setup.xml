@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialogRootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/profile_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="Profile name"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/profile_name_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/input_horizontal_margin"
+        android:layout_marginLeft="@dimen/input_horizontal_margin"
+        android:layout_marginRight="@dimen/input_horizontal_margin"
+        android:layout_marginStart="@dimen/input_horizontal_margin"
+        android:hint="Name of profile to save to" />
+
+    <TextView
+        android:id="@+id/source"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="File or directory to backup"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/source_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/input_horizontal_margin"
+        android:layout_marginLeft="@dimen/input_horizontal_margin"
+        android:layout_marginRight="@dimen/input_horizontal_margin"
+        android:layout_marginStart="@dimen/input_horizontal_margin"
+        android:hint="FULL path of source" />
+
+    <TextView
+        android:id="@+id/server_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:text="Backup server (IP or hostname)"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/server_name_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/input_horizontal_margin"
+            android:layout_marginStart="@dimen/input_horizontal_margin"
+            android:layout_weight="1"
+            android:hint="IP/Hostname" />
+
+        <EditText
+            android:id="@+id/server_name_port_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/input_horizontal_margin"
+            android:layout_marginRight="@dimen/input_horizontal_margin"
+            android:hint=" Port "
+            android:maxLength="6"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:text="Username"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/user_name_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/input_horizontal_margin"
+        android:layout_marginLeft="@dimen/input_horizontal_margin"
+        android:layout_marginRight="@dimen/input_horizontal_margin"
+        android:layout_marginStart="@dimen/input_horizontal_margin"
+        android:hint="Username on server" />
+
+    <TextView
+        android:id="@+id/destination"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:text="Destination on server"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/destination_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/input_horizontal_margin"
+        android:layout_marginLeft="@dimen/input_horizontal_margin"
+        android:layout_marginRight="@dimen/input_horizontal_margin"
+        android:layout_marginStart="@dimen/input_horizontal_margin"
+        android:hint="FULL path of destination" />
+
+    <TextView
+        android:id="@+id/extra_arguments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:text="Extra arguments"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/extra_arguments_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/input_horizontal_margin"
+        android:layout_marginLeft="@dimen/input_horizontal_margin"
+        android:layout_marginRight="@dimen/input_horizontal_margin"
+        android:layout_marginStart="@dimen/input_horizontal_margin"
+        android:hint="Arguments for rsync" />
+
+
+</LinearLayout>

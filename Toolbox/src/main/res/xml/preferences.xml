@@ -19,12 +19,6 @@
             android:title="@string/pref_custom_deletion_folders" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/pref_header_backup">
-        <Preference
-            android:key="backup_storage_setup_pref"
-            android:title="@string/pref_backup_storage_setup" />
-    </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/pref_header_about">
         <Preference
             android:key="about_pref"
