@@ -12,14 +12,17 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.common.collect.ImmutableSet;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -74,19 +77,17 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
 
     @SuppressWarnings("unchecked")
     public void showProfilesDialog() {
-        if (profilesInDialog != null)
-            profilesInDialog.clear();
 
+        if (profilesInDialog != null) profilesInDialog.clear();
         Set<String> prefProfiles = pref.getStringSet(Common.PREF_PROFILES, null);
         if (prefProfiles == null) {
             prefProfiles = ImmutableSet.of(getResources().getString(R.string.dialog_item_no_profiles_available));
         }
-        profilesInDialog = new LinkedList<String>(prefProfiles);
 
-        // Dialogs
+        profilesInDialog = new LinkedList<String>(prefProfiles);
         ListAdapter profilesAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, profilesInDialog);
-        final AlertDialog.Builder profilesDialog = new AlertDialog.Builder(getActivity());
-        profilesDialog.setTitle(R.string.dialog_title_choose_profile)
+        AlertDialog.Builder profilesDialogBuilder = new AlertDialog.Builder(getActivity());
+        profilesDialogBuilder.setTitle(R.string.dialog_title_choose_profile)
                 .setAdapter(profilesAdapter, profilesInDialog.contains(getResources().getString(R.string.dialog_item_no_profiles_available)) ? null : new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -98,45 +99,7 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
                 .setNeutralButton(getResources().getString(R.string.add), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        profilesInDialog.clear();
-                        // Add profile dialog
-                        LayoutInflater li = LayoutInflater.from(getActivity());
-                        // Views
-                        final View dialogView = li.inflate(R.layout.dialog_backup_setup, null);
-
-                        final EditText profile_name = (EditText) dialogView.findViewById(R.id.profile_name_input);
-
-                        final EditText source = (EditText) dialogView.findViewById(R.id.source_input);
-                        final EditText server = (EditText) dialogView.findViewById(R.id.server_name_input);
-                        final EditText port = (EditText) dialogView.findViewById(R.id.server_name_port_input);
-                        final EditText user = (EditText) dialogView.findViewById(R.id.user_name_input);
-                        final EditText destination = (EditText) dialogView.findViewById(R.id.destination_input);
-                        final EditText arguments = (EditText) dialogView.findViewById(R.id.extra_arguments_input);
-
-
-                        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-                        dialog.setView(dialogView)
-                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                                        Utils.addNewProfile(getActivity(), profile_name.getText().toString(), source.getText().toString(),
-                                                server.getText().toString(), port.getText().toString(),
-                                                user.getText().toString(), destination.getText().toString(),
-                                                arguments.getText().toString());
-
-                                        showProfilesDialog();
-                                    }
-                                })
-                                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        showProfilesDialog();
-                                    }
-                                })
-                                .setCancelable(false)
-                                .create().show();
-
+                        showAddOrEditProfileDialog(9001);
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -145,9 +108,82 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
                         demandReturnBackListener.onDemandReturnBack();
                     }
                 })
+                .setCancelable(false);
+        AlertDialog profilesDialog = profilesDialogBuilder.create();
+        ListView listView = profilesDialog.getListView();
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                showActionDialog(i);
+                return false;
+            }
+        });
+        profilesDialog.show();
+
+    }
+
+    private void showActionDialog(final int clickedProfile) {
+        final List<String> actionsList = Arrays.asList("delete", "edit");
+        ListAdapter actionsAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, actionsList);
+        AlertDialog.Builder action = new AlertDialog.Builder(getActivity());
+        action
+                .setAdapter(actionsAdapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int action) {
+                        if (actionsList.get(action).equals("delete")) {
+                            Utils.deleteProfile(getActivity(), profilesInDialog.get(clickedProfile));
+                            showProfilesDialog();
+                        } else if (actionsList.get(action).equals("edit"))
+                            showAddOrEditProfileDialog(clickedProfile);
+                    }
+                })
                 .setCancelable(false)
                 .create().show();
     }
+
+    private void showAddOrEditProfileDialog(int profileToEdit) {
+        boolean loadData = false;
+        final String editedProfile;
+        if (profileToEdit > 9000)
+            editedProfile = Common.NOT_AVAILABLE;
+        else {
+            editedProfile = profilesInDialog.get(profileToEdit);
+            loadData = true;
+        }
+        LayoutInflater li = LayoutInflater.from(getActivity());
+        final View dialogView = li.inflate(R.layout.dialog_backup_setup, null);
+
+        final EditText profile_name = (EditText) dialogView.findViewById(R.id.profile_name_input);
+        final EditText source = (EditText) dialogView.findViewById(R.id.source_input);
+        final EditText server = (EditText) dialogView.findViewById(R.id.server_name_input);
+        final EditText port = (EditText) dialogView.findViewById(R.id.server_name_port_input);
+        final EditText user = (EditText) dialogView.findViewById(R.id.user_name_input);
+        final EditText destination = (EditText) dialogView.findViewById(R.id.destination_input);
+        final EditText arguments = (EditText) dialogView.findViewById(R.id.extra_arguments_input);
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+        dialog.setView(dialogView)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Utils.changeProfile(getActivity(), profile_name.getText().toString(), source.getText().toString(),
+                                server.getText().toString(), port.getText().toString(),
+                                user.getText().toString(), destination.getText().toString(),
+                                arguments.getText().toString(), editedProfile);
+
+                        showProfilesDialog();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        showProfilesDialog();
+                    }
+                })
+                .setCancelable(false)
+                .create().show();
+    }
+
 
     private class BackupTask extends AsyncTask<Void, String, Boolean> {
 
@@ -172,12 +208,10 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            /*for (String str : */
-            Shell.SH.run("rsync -a -P " + arguments + " --delete-after -e \"ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -y -p " + port + "\" " + source + " " + user + "@" + server + ":" + destination);/*) {
+            String cmd = "rsync -avP " + arguments + " --delete-after -e \"ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -y -p " + port + "\" " + source + " " + user + "@" + server + ":" + destination;
+            for (String str : Shell.SH.run(cmd)) {
                 publishProgress(str);
-            }*/
-
-            publishProgress("test");
+            }
             return null;
         }
 

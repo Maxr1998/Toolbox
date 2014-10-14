@@ -92,14 +92,22 @@ public class Utils {
     }
 
     public static void changeProfile(Context context, String profile_name, String source, String server, String port, String user, String destination, String arguments, String old_name) {
+        if (!old_name.equals(Common.NOT_AVAILABLE))
+            deleteProfile(context, old_name);
+
+        addNewProfile(context, profile_name, source, server, port, user, destination, arguments);
+    }
+
+    public static void deleteProfile(Context context, String profileToDelete) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         Set<String> prefProfiles = pref.getStringSet(Common.PREF_PROFILES, null);
 
-        prefProfiles.remove(old_name);
-        pref.edit().putStringSet(Common.PREF_PROFILES, prefProfiles).commit();
-        pref.edit().remove(old_name).commit();
+        if (prefProfiles == null)
+            throw new NullPointerException("Values of selected profile are null!");
 
-        addNewProfile(context, profile_name, source, server, port, user, destination, arguments);
+        prefProfiles.remove(profileToDelete);
+        pref.edit().putStringSet(Common.PREF_PROFILES, prefProfiles).commit();
+        pref.edit().remove(profileToDelete).commit();
     }
 
     public static String[] getValuesForProfile(Context context, String profile) {
