@@ -25,6 +25,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
@@ -35,6 +37,7 @@ public class BaseActivity extends Activity implements DemandReturnBackListener {
     public static File manifestFile;
     private static Activity ACTIVITY;
     public int updateInterval;
+    File dataDir;
     SharedPreferences prefs;
     URL manifestUrl;
     CustomNavDrawerAdapter adapter;
@@ -105,12 +108,35 @@ public class BaseActivity extends Activity implements DemandReturnBackListener {
                     })
                     .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            ACTIVITY.finish();
+                            finish();
                         }
                     })
                     .show();
         }
 
+    }
+
+    public void setupRawFile() {
+        File rsync = new File(dataDir + File.separator + getResources().getString(R.string.rsync_filename));
+
+        if (!rsync.exists() && !rsync.canExecute()) {
+            try {
+                InputStream ins = getResources().openRawResource(R.raw.rsync);
+
+                byte[] buffer = new byte[ins.available()];
+
+                ins.read(buffer);
+                ins.close();
+                FileOutputStream fos = openFileOutput("rsync", Context.MODE_PRIVATE);
+                fos.write(buffer);
+                fos.close();
+
+                File file = getFileStreamPath("rsync");
+                file.setExecutable(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -122,8 +148,8 @@ public class BaseActivity extends Activity implements DemandReturnBackListener {
         ACTIVITY = this;
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         updateInterval = Integer.parseInt(prefs.getString("update_interval", "48"));
-        File dataDir = new File(Utils.getDataDir(ACTIVITY));
-        manifestFile = new File(dataDir + File.separator + ACTIVITY.getString(R.string.manifest_filename));
+        dataDir = new File(Utils.getDataDir(ACTIVITY));
+        manifestFile = new File(dataDir + File.separator + getResources().getString(R.string.manifest_filename));
         try {
             manifestUrl = new URL(ACTIVITY.getString(R.string.manifest_link));
         } catch (MalformedURLException e) {
@@ -132,6 +158,7 @@ public class BaseActivity extends Activity implements DemandReturnBackListener {
         }
         // Actions
         downloadManifest();
+        setupRawFile();
 
         // Navigation Drawer
         mTitle = mDrawerTitle = getTitle();

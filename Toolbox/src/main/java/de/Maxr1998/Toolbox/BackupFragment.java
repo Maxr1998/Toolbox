@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.google.common.collect.ImmutableSet;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,7 +44,7 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
         try {
             demandReturnBackListener = (DemandReturnBackListener) activity;
         } catch (ClassCastException e) {
-            throw new RuntimeException(getActivity().getClass().getSimpleName() + "must implement DemandReturnBackListener to use this fragment!", e);
+            throw new RuntimeException(getActivity().getClass().getSimpleName() + " must implement DemandReturnBackListener to use this fragment!", e);
         }
     }
 
@@ -161,6 +162,17 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
         final EditText destination = (EditText) dialogView.findViewById(R.id.destination_input);
         final EditText arguments = (EditText) dialogView.findViewById(R.id.extra_arguments_input);
 
+        if (loadData) {
+            String[] values = Utils.getValuesForProfile(getActivity(), editedProfile);
+            profile_name.setText(editedProfile);
+            source.setText(values[0]);
+            server.setText(values[1]);
+            port.setText(values[2]);
+            user.setText(values[3]);
+            destination.setText(values[4]);
+            arguments.setText(values[5]);
+        }
+
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
         dialog.setView(dialogView)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -170,7 +182,6 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
                                 server.getText().toString(), port.getText().toString(),
                                 user.getText().toString(), destination.getText().toString(),
                                 arguments.getText().toString(), editedProfile);
-
                         showProfilesDialog();
                     }
                 })
@@ -208,7 +219,11 @@ public class BackupFragment extends Fragment implements View.OnClickListener {
 
         @Override
         protected Boolean doInBackground(Void... voids) {
-            String cmd = "rsync -avP " + arguments + " --delete-after -e \"ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -y -p " + port + "\" " + source + " " + user + "@" + server + ":" + destination;
+
+            File rsync = new File(Utils.getDataDir(getActivity()) + File.separator + "files" + File.separator + getActivity().getResources().getString(R.string.rsync_filename));
+
+            String cmd = rsync + " -avP " + arguments + " --ignore-errors --delete-after -e \"ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -y -p " + port + "\" " + source + " " + user + "@" + server + ":" + destination;
+            publishProgress(cmd);
             for (String str : Shell.SH.run(cmd)) {
                 publishProgress(str);
             }

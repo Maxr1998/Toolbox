@@ -102,6 +102,7 @@
     <!-- DO NOT TRANSLATE // STATIC -->
     <string name="manifest_link">https://dl.dropboxusercontent.com/s/s0pskncqf9cf4ib/manifest.txt</string>
     <string name="manifest_filename">manifest.txt</string>
+    <string name="rsync_filename">rsync</string>
 
 
     <!-- NEW, reordering needed! -->
